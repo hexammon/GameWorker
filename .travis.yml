@@ -1,0 +1,33 @@
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  # update docker
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get  -y install docker-ce
+
+install:
+  - make build-docker-base
+  - make build-docker-dev
+  - make run-composer-dev
+
+script:
+- make tests
+
+after_success:
+# update image in docker hub
+  - if [[ "$TRAVIS_TAG" ]]; then
+    make run-composer-prod
+    make build-docker-prod
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
+    source .env
+    make docker-push
+    fi
+
+cache:
+  directories:
+    - $HOME/.composer/cache

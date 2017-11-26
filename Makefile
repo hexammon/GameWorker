@@ -6,3 +6,6 @@ build-docker-dev:
 
 run-docker-dev:
 	docker-compose -f docker-compose-base.yml -f docker-compose-dev.yml up -d
+
+run-composer-dev:
+	./tools/composer.sh install

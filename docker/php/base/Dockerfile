@@ -8,6 +8,6 @@ RUN apk update \
     && apk add supervisor \
     && rm -rf /var/cache/apk/*
 
-WORKDIR /srv/game-server
+WORKDIR /srv/game-worker
 
 CMD /usr/bin/supervisord -c /etc/supervisor/game-worker.conf
