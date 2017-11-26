@@ -1,0 +1,8 @@
+version: "3.4"
+
+services:
+  game-server:
+    build:
+      args:
+        - SOURCE_DOCKER_IMAGE=${SOURCE_DOCKER_IMAGE}
+      context: docker/php/base
