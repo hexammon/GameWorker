@@ -9,3 +9,8 @@ run-docker-dev:
 
 run-composer-dev:
 	./tools/composer.sh install
+
+tests: phpunit
+
+phpunit:
+	./tools/phpunit.sh

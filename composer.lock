@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f9a3a0d7cf9cbe2d62055e8da3d98f2a",
+    "content-hash": "995a065f34d1e1811912255369e72e16",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -296,6 +296,38 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "hexammon/hexo-nards",
+            "version": "1.0.0-alpha.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hexammon/HexoNards.git",
+                "reference": "58aaabe4b50ea0d7453d7aeacdc01c95afeeaa9c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hexammon/HexoNards/zipball/58aaabe4b50ea0d7453d7aeacdc01c95afeeaa9c",
+                "reference": "58aaabe4b50ea0d7453d7aeacdc01c95afeeaa9c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.4"
+            },
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "FreeElephants\\HexoNards\\": "src/php"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "samizdam",
+                    "email": "samizdam@inbox.ru"
+                }
+            ],
+            "time": "2017-11-27T19:41:07+00:00"
         },
         {
             "name": "psr/container",
@@ -2893,7 +2925,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "hexammon/hexo-nards": 15
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
