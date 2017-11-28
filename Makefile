@@ -5,7 +5,7 @@ build-docker-dev:
 	docker-compose -f docker-compose-base.yml -f docker-compose-build.yml -f docker-compose-dev.yml build
 
 run-docker-dev:
-	docker-compose -f docker-compose-base.yml -f docker-compose-dev.yml up -d
+	docker-compose -f docker-compose-base.yml -f docker-compose-dev.yml up -d --remove-orphans
 
 run-composer-dev:
 	./tools/composer.sh install
