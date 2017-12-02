@@ -12,3 +12,15 @@ RUN curl -OL https://getcomposer.org/download/1.5.2/composer.phar \
     && docker-php-ext-install zip \
     && rm -rf /var/cache/apk/*
 
+# enable debug
+RUN apk update \
+    && apk add --no-cache \
+        libxml2-dev \
+        g++ \
+    && rm -rf /var/cache/apk/*
+
+RUN docker-php-source extract \
+    && cd /usr/src/php \
+    && ./configure --enable-phpdbg \
+    &&  docker-php-source delete
+

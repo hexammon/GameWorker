@@ -1,11 +1,9 @@
 <?php
 
-
 namespace Hexammon\GameWorkerTest;
 
-
-use FreeElephants\HexoNards\Game\Game;
 use Hexammon\GameWorker\Application;
+use Hexammon\HexoNards\Game\Game;
 use PHPUnit\Framework\TestCase;
 
 class StartUpTest extends TestCase
@@ -18,4 +16,5 @@ class StartUpTest extends TestCase
         $app = new Application($game);
         $this->assertInstanceOf(Game::class, $app->getGame());
     }
+
 }

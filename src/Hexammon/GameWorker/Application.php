@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Hexammon\GameWorker;
 
-
-use FreeElephants\HexoNards\Game\Game;
+use Hexammon\HexoNards\Game\Game;
 
 class Application
 {
