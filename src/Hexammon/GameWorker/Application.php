@@ -2,6 +2,7 @@
 
 namespace Hexammon\GameWorker;
 
+use Hexammon\HexoNards\Game\Action\PlayerActionInterface;
 use Hexammon\HexoNards\Game\Game;
 
 class Application
@@ -20,5 +21,10 @@ class Application
     public function getGame(): Game
     {
         return $this->game;
+    }
+
+    public function do(PlayerActionInterface $action)
+    {
+        $this->game->invoke($action);
     }
 }

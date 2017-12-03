@@ -13,14 +13,29 @@ RUN curl -OL https://getcomposer.org/download/1.5.2/composer.phar \
     && rm -rf /var/cache/apk/*
 
 # enable debug
-RUN apk update \
-    && apk add --no-cache \
-        libxml2-dev \
-        g++ \
-    && rm -rf /var/cache/apk/*
+#RUN apk update \
+#    && apk add --no-cache \
+#        icu-dev \
+#        libxml2-dev \
+#        g++ \
+#        autoconf \
+#    && rm -rf /var/cache/apk/*
+#        make \
+#        libmcrypt \
+#        libmcrypt-dev \
+#        git \
+#        mysql-client \
+#        curl \
+#        openssh-client \
+#        freetype-dev \
+#        libpng-dev \
+#        libjpeg-turbo-dev \
+RUN apk add --no-cache $PHPIZE_DEPS \
+    && pecl install xdebug \
+    && docker-php-ext-enable xdebug.so
 
-RUN docker-php-source extract \
-    && cd /usr/src/php \
-    && ./configure --enable-phpdbg \
-    &&  docker-php-source delete
+#RUN docker-php-source extract \
+#    && cd /usr/src/php \
+#    && ./configure --enable-phpdbg \
+#    &&  docker-php-source delete
 
