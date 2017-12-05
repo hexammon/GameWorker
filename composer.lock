@@ -303,12 +303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hexammon/HexoNards.git",
-                "reference": "4ffa44625bbda694e7cf08c3ce1870d4b5a9b1ee"
+                "reference": "ad29fda1aa923bcbb423aed02376129de9c7fd12"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hexammon/HexoNards/zipball/4ffa44625bbda694e7cf08c3ce1870d4b5a9b1ee",
-                "reference": "4ffa44625bbda694e7cf08c3ce1870d4b5a9b1ee",
+                "url": "https://api.github.com/repos/hexammon/HexoNards/zipball/ad29fda1aa923bcbb423aed02376129de9c7fd12",
+                "reference": "ad29fda1aa923bcbb423aed02376129de9c7fd12",
                 "shasum": ""
             },
             "require-dev": {
@@ -327,7 +327,7 @@
                     "email": "samizdam@inbox.ru"
                 }
             ],
-            "time": "2017-12-03T20:22:54+00:00"
+            "time": "2017-12-04T21:05:13+00:00"
         },
         {
             "name": "psr/container",

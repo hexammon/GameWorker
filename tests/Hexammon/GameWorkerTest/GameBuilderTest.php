@@ -5,8 +5,6 @@ namespace Hexammon\GameWorkerTest;
 use Hexammon\GameWorker\BoardConfig;
 use Hexammon\GameWorker\GameBuilder;
 use Hexammon\GameWorker\Player;
-use Hexammon\HexoNards\Game\Move\Random\RandomMoveGeneratorAdapter;
-use Hexammon\HexoNards\Game\Move\Random\TwoDice;
 use PHPUnit\Framework\TestCase;
 
 class GameBuilderTest extends TestCase
@@ -22,7 +20,7 @@ class GameBuilderTest extends TestCase
             $player1,
             $player2,
         ];
-        $game = $builder->build($players, $boardConfig, new RandomMoveGeneratorAdapter(new TwoDice()));
+        $game = $builder->build($players, $boardConfig);
         $this->assertCount(2, $game->getPlayers());
 
         $this->assertCount(1, $game->getBoard()->getTileByCoordinates('1.4')->getArmy());
