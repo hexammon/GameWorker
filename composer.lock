@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "87bebe5350f3437df56afcfccf9f9835",
+    "content-hash": "f420f6ca546dc4c629a7c3c5cfe67fb9",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -303,12 +303,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/hexammon/HexoNards.git",
-                "reference": "ad29fda1aa923bcbb423aed02376129de9c7fd12"
+                "reference": "3887807c5e6d9b0a738fe7fa403a807220addf31"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hexammon/HexoNards/zipball/ad29fda1aa923bcbb423aed02376129de9c7fd12",
-                "reference": "ad29fda1aa923bcbb423aed02376129de9c7fd12",
+                "url": "https://api.github.com/repos/hexammon/HexoNards/zipball/3887807c5e6d9b0a738fe7fa403a807220addf31",
+                "reference": "3887807c5e6d9b0a738fe7fa403a807220addf31",
                 "shasum": ""
             },
             "require-dev": {
@@ -327,7 +327,52 @@
                     "email": "samizdam@inbox.ru"
                 }
             ],
-            "time": "2017-12-04T21:05:13+00:00"
+            "time": "2017-12-05T19:46:42+00:00"
+        },
+        {
+            "name": "lootils/uuid",
+            "version": "1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lootils/uuid.git",
+                "reference": "7658af1e06c4cce26f932d034798eb33bc9e0e7a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lootils/uuid/zipball/7658af1e06c4cce26f932d034798eb33bc9e0e7a",
+                "reference": "7658af1e06c4cce26f932d034798eb33bc9e0e7a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*",
+                "satooshi/php-coveralls": "0.6.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Lootils\\Uuid": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Farina",
+                    "email": "matt@mattfarina.com",
+                    "homepage": "http://mattfarina.com"
+                }
+            ],
+            "description": "A simple class for working with UUIDs.",
+            "homepage": "https://github.com/lootils/lootils-uuid",
+            "keywords": [
+                "uuid"
+            ],
+            "time": "2013-11-15T13:39:44+00:00"
         },
         {
             "name": "psr/container",
