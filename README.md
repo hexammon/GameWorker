@@ -20,6 +20,10 @@ String in ISO-8601: YYYY-MM-DDThh:mm:ss[.sss]±hh:mm
 
 ### RPC's
 
+#### Public
+
+Called by players clients.
+
 `net.hexammon.game.<uuid>.assault, [assaulterArmyCoord: <coords>, attackedCastleCoords: <coords>]`
 
 `net.hexammon.game.<uuid>.attack, [assaulterArmyCoord: <coords>, attackedArmyCoords: <coords>]`
@@ -64,6 +68,23 @@ Where `BoardDiff` -- aggregation of affected in last move tiles -- object with n
     "<coords>": "<Tile>"
 }
 ```
+
+#### Internal
+
+Called by Game Dispatcher. 
+
+`net.hexammon.games.create, [players: <Player>[], boardType: (hex|square), numberOfRows: <int>, numberOfColumns: <int>]`
+
+Initialize game with players and board. Return structure with game info:
+
+```json
+{
+    "uuid": "XXXX-XXXX-XXXX-XXXX",
+    "players": "<Player>[]",
+    "board": "<BoardDiff>" // full board representation after initial setting 
+}
+```
+
 
 ### Topics
 

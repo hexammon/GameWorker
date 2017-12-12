@@ -6,10 +6,24 @@ services:
     build:
       args:
         - BASE_DOCKER_IMAGE=${BASE_DOCKER_IMAGE}
-      context: .
-      dockerfile: php-dev.Dockerfile
+      context: docker/php/dev
 
     volumes:
       - .:/srv/game-worker
 
+    ports:
+      - "9001:9001"
+      - "8080:8080"
 
+  wamp-router:
+    image: freeelephants/thruway:0.3.0
+    volumes:
+      - ./var/log/wamp:/var/log/thruway
+    environment:
+      - AUTHORIZATION_ENABLE=1
+      - AUTH_METHOD=jwt
+      - JWT_SECRET_KEY=foo
+      - JWT_ALGOS=HS256
+      - REALM=hexammon
+      - ALLOW_REALM_AUTOCREATE=0
+      - THRUWAY_DEBUG_ENABLE=1

@@ -36,8 +36,14 @@ class Router
         $this->gameUUID = $gameUUID;
     }
 
+
     public function bindActions(ClientSession $session)
     {
+        /**
+         * TODO: unpack rpc arguments from lambda - right signature is function(array $args, array $argsKw, array $details)
+         * TODO: use ['disclose_caller'=>true] everywhere in rpc registrations.
+         */
+
         $session->register($this->buildUri('assault'), function (string $sourceCoods, string $targetCoords) {
             // TODO add check that army exists and castle exists
             $assaulterArmy = $this->getTileByCoordinates($sourceCoods)->getArmy();
