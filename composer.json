@@ -2,7 +2,7 @@
     "name": "hexammon/game-worker",
     "type": "project",
     "require": {
-        "voryx/thruway": "^0.5.0",
+        "thruway/client": "^0.5.0",
         "free-elephants/jwt": "^0.3.0",
         "free-elephants/di": "^1.6",
         "hexammon/hexo-nards": "dev-master",
@@ -10,16 +10,17 @@
         "react/child-process": "^0.5.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.4"
+        "phpunit/phpunit": "^6.4",
+        "codeception/codeception": "^2.3"
     },
     "autoload": {
         "psr-4": {
-            "Hexammon\\GameWorker\\": ["src/Hexammon/GameWorker/"]
+            "Hexammon\\": ["src/Hexammon/"]
         }
     },
     "auroload-dev": {
         "psr-4": {
-            "Hexammon\\GameWorkerTest\\": ["tests/Hexammon/GameWorkerTest/"]
+            "Hexammon\\GameWorkerTest\\": ["tests/unit/Hexammon/GameWorkerTest/"]
         }
     },
     "license": "BSD-2",

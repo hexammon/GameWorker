@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://cdn.jsdelivr.net/npm/autobahn-js-built@0.11.1/autobahn.min.js"></script>
+    <title>Game Worker Service Testing Page</title>
+</head>
+<body>
+
+<header>
+    <h1>Hello <span id="login">anonymus</span></h1>
+</header>
+
+<input type="text" id="wamp-address" name="wamp-address" value="wamp-router:9000"/>
+<button id="connector">Connect to wamp</button>
+
+<button>Create game</button>
+
+<section id="games">
+
+</section>
+</body>
+<script>
+    document.getElementById("connector").onclick = () => {
+        let wampAddress = document.getElementById("wamp-address").value;
+
+        let connection = new autobahn.Connection({
+            url: `ws://${wampAddress}/`,
+            realm: 'hexammon',
+            authmethods: ['jwt'],
+            onchallenge: function (session, method, extra) {
+                if (method === 'jwt') {
+                    // you could also return a promise here
+                    return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoaWQiOiJwbGF5ZXIiLCJhdXRocm9sZXMiOlsicGxheWVyIl19.wCvVkIg648cjX7sxrqHv2VL2fjeSRWEMsYegUI6SI10';
+                }
+            }
+        });
+
+        connection.onopen = function(session, details) {
+            document.getElementById("login").innerText = details.authid;
+            // console.log("Successfully made the socket connection as " + details.authid + ".");
+        };
+
+        connection.onclose = function(reason, details) {
+            console.log("Connection close: " + reason);
+        };
+
+        connection.open();
+    };
+</script>
+</html>

@@ -1,16 +1,31 @@
 version: "3.4"
 
 services:
+
+  frontend:
+    image: nginx:1.13.7-alpine
+    volumes:
+      - ./tests/_static:/usr/share/nginx/html/:ro
+    ports:
+      - 8082:80
+
+  selenium:
+    image: selenium/standalone-chrome
+
   game-server:
+    container_name: hexammon-game-worker
     image: ${DEV_DOCKER_IMAGE}
     build:
       args:
-        - BASE_DOCKER_IMAGE=${BASE_DOCKER_IMAGE}
+        BASE_DOCKER_IMAGE: ${BASE_DOCKER_IMAGE}
       context: docker/php/dev
 
+#    network_mode: host
     volumes:
       - .:/srv/game-worker
-
+    environment:
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      REALM: ${REALM}
     ports:
       - "9001:9001"
       - "8080:8080"
@@ -20,10 +35,12 @@ services:
     volumes:
       - ./var/log/wamp:/var/log/thruway
     environment:
-      - AUTHORIZATION_ENABLE=1
-      - AUTH_METHOD=jwt
-      - JWT_SECRET_KEY=foo
-      - JWT_ALGOS=HS256
-      - REALM=hexammon
-      - ALLOW_REALM_AUTOCREATE=0
-      - THRUWAY_DEBUG_ENABLE=1
+      AUTHORIZATION_ENABLE: 1
+      AUTH_METHOD: jwt
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      JWT_ALGOS: HS256
+      REALM: ${REALM}
+      ALLOW_REALM_AUTOCREATE: 0
+      THRUWAY_DEBUG_ENABLE: 1
+    ports:
+      - 9000:9000
