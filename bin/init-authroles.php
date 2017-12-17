@@ -14,19 +14,26 @@ $client->on('open', function (\Thruway\ClientSession $session) {
 
     $session->call('flush_authorization_rules', [true]);
 
-    $createGameRule = new \stdClass();
-    $createGameRule->role = 'player';
-    $createGameRule->action = 'register';
-    $createGameRule->uri = 'net.hexammon.game.create';
-    $createGameRule->allow = true;
-    $session->call('add_authorization_rule', [$createGameRule]);
+    $createGameCallerRule = new \stdClass();
+    $createGameCallerRule->role = 'player';
+    $createGameCallerRule->action = 'call';
+    $createGameCallerRule->uri = 'net.hexammon.game.create';
+    $createGameCallerRule->allow = true;
+    $session->call('add_authorization_rule', [$createGameCallerRule]);
 
-//    $createGameRule = new \stdClass();
-//    $createGameRule->role = 'player';
-//    $createGameRule->action = 'register';
-//    $createGameRule->uri = 'net.hexammon.game.create';
-//    $createGameRule->allow = true;
-//    $session->call('add_authorization_rule', [$createGameRule]);
+    $createGameCalleRule = new \stdClass();
+    $createGameCalleRule->role = 'game_watcher';
+    $createGameCalleRule->action = 'register';
+    $createGameCalleRule->uri = 'net.hexammon.game.create';
+    $createGameCalleRule->allow = true;
+    $session->call('add_authorization_rule', [$createGameCalleRule]);
+//
+    $gameWorkerCalleRule = new \stdClass();
+    $gameWorkerCalleRule->role = 'game_worker';
+    $gameWorkerCalleRule->action = 'register';
+    $gameWorkerCalleRule->uri = 'net.hexammon.game.';
+    $gameWorkerCalleRule->allow = true;
+    $session->call('add_authorization_rule', [$gameWorkerCalleRule]);
 });
 
 // Transport layer

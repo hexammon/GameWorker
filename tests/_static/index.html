@@ -11,10 +11,21 @@
     <h1>Hello <span id="login">anonymus</span></h1>
 </header>
 
-<input type="text" id="wamp-address" name="wamp-address" value="wamp-router:9000"/>
-<button id="connector">Connect to wamp</button>
+<fieldset>
+    <legend>Wamp Connection</legend>
+    <input type="text" id="wamp-address" name="wamp-address" value="wamp-router:9000"/>
+    <button id="connector">Connect to wamp</button>
+</fieldset>
 
-<button>Create game</button>
+<fieldset>
+    <legend>Game creation</legend>
+    <input type="number" id="number-of-rows" name="number-of-rows"/>
+    <input type="number" id="number-of-cols" name="number-of-cols"/>
+    <label for="cell-type-hex">hex</label><input type="radio" id="cell-type-hex" name="cell-type" value="hex"/>
+    <label for="cell-type-square">square</label><input type="radio" id="cell-type-square" name="cell-type"
+                                                       value="square"/>
+    <button id="create-game">Create game</button>
+</fieldset>
 
 <section id="games">
 
@@ -36,12 +47,32 @@
             }
         });
 
-        connection.onopen = function(session, details) {
+        connection.onopen = function (session, details) {
             document.getElementById("login").innerText = details.authid;
-            // console.log("Successfully made the socket connection as " + details.authid + ".");
+
+            document.getElementById("create-game").onclick = () => {
+                let playersIds = [1, 2];
+                let gameParams = [
+                    playersIds,
+                    document.querySelector('input[name="cell-type"]:checked').value,
+                    document.getElementById("number-of-rows").value,
+                    document.getElementById("number-of-cols").value,
+                ];
+                session.call('net.hexammon.game.create', gameParams).then(
+                    (result) => {
+                        console.log(result);
+                    },
+                    (error) => {
+                        console.error(error);
+                    },
+                    (progress) => {
+                        console.debug(progress);
+                    },
+                )
+            }
         };
 
-        connection.onclose = function(reason, details) {
+        connection.onclose = function (reason, details) {
             console.log("Connection close: " + reason);
         };
 

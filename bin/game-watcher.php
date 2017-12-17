@@ -2,10 +2,12 @@
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+define('JWT_SECRET_KEY', getenv('JWT_SECRET_KEY'));
+$loop = \React\EventLoop\Factory::create();
 $client = new Thruway\Peer\Client('hexammon', $loop);
 $client->setAuthId('game-watcher');
 $client->setAuthMethods(['jwt']);
-$jwt = (new \FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter('foo'))->encode([
+$jwt = (new \FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter(JWT_SECRET_KEY))->encode([
     'authid' => 'game-watcher',
     'authroles' => ['game-watcher']
 ], 'HS256');
@@ -14,9 +16,13 @@ $client->addClientAuthenticator(new \Hexammon\Wamp\ClientJwtAuthenticator($jwt, 
 
 $client->on('open', function (\Thruway\ClientSession $session) use ($loop) {
 
-    $session->register('net.hexammon.game.create', function ($playesIds, $boardParams) use ($loop) {
-        $newGameWorkerCmd = sprintf('php /srv/game-worker/game-worker.php %s %s', json_encode($playesIds),
-            json_encode($boardParams));
+    $session->register('net.hexammon.game.create', function ($args) use ($loop) {
+//        var_dump($args);
+        list($playesIds, $boardType, $numberOfRows, $numberOfCols) = $args;
+        $playersCmdArg = json_encode($playesIds);
+        $boardCmdArg = json_encode([$boardType, $numberOfRows, $numberOfCols]);
+//        var_dump($playesIds, $boardCmdArg);
+        $newGameWorkerCmd = sprintf('php /srv/game-worker/bin/game-worker.php \'%s\' \'%s\'', $playersCmdArg, $boardCmdArg);
         $process = new React\ChildProcess\Process($newGameWorkerCmd);
         try {
             $process->start($loop);

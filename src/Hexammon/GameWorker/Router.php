@@ -130,7 +130,7 @@ class Router
 
     private function buildUri(string $suffix): string
     {
-        return sprintf('net.haxammon.%s.%s', $this->gameUUID->getUuid(), $suffix);
+        return sprintf('net.hexammon.%s.%s', str_replace('-', '_', $this->gameUUID->getUuid()), $suffix);
     }
 
     private function doActionAndGetResult(PlayerActionInterface $action)
