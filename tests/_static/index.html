@@ -97,9 +97,10 @@
             }
 
             document.getElementById("show-games").onclick = () => {
-
+                session.call('net.hexammon.game.')
                 let gamesList = document.getElementById("games");
-                let newGameItem = gamesList.createElement("li");
+                let newChild = document.createElement("li");
+                let newGameItem = gamesList.appendChild(newChild);
                 gamesList.appendChild(newGameItem);
             }
         };

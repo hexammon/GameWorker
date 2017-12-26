@@ -1,44 +1,54 @@
 <?php
 
+use FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter;
+use Hexammon\GameWorker\Application;
+use Hexammon\GameWorker\BoardConfig;
+use Hexammon\GameWorker\GameBuilder;
+use Hexammon\GameWorker\Player;
+use Hexammon\GameWorker\Router;
+use Hexammon\HexoNards\Game\Rules\ClassicRuleSet;
+use Hexammon\Wamp\ClientJwtAuthenticator;
+use Lootils\Uuid\Uuid;
+use React\EventLoop\Factory;
+use Thruway\ClientSession;
+use Thruway\Peer\Client;
+use Thruway\Transport\PawlTransportProvider;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 // params getting
 $players = [];
 
 foreach (json_decode($argv[1]) as $playerId) {
-    $players[$playerId] = new \Hexammon\GameWorker\Player();
+    $players[$playerId] = new Player($playerId);
 }
 
-//var_dump($players);
 $boardParams = json_decode($argv[2]);
-//var_dump($argv[2]);
-//var_dump($boardParams);
-$boardConfig = new \Hexammon\GameWorker\BoardConfig(...$boardParams);
-//var_dump($boardConfig);
-$ruleSet = new \Hexammon\HexoNards\Game\Rules\ClassicRuleSet();
+$boardConfig = new BoardConfig(...$boardParams);
+$ruleSet = new ClassicRuleSet();
 
 // Application logic
-$game = (new \Hexammon\GameWorker\GameBuilder())->build($players, $boardConfig, $ruleSet);
-$application = new \Hexammon\GameWorker\Application($game);
+$game = (new GameBuilder())->build($players, $boardConfig, $ruleSet);
+$application = new Application($game);
 
-$gameUUID = \Lootils\Uuid\Uuid::createV4();
+$gameUUID = Uuid::createV4();
 $workerAuthId = 'game-worker' . $gameUUID;
 
 define('JWT_SECRET_KEY', getenv('JWT_SECRET_KEY'));
-$loop = \React\EventLoop\Factory::create();
-$client = new Thruway\Peer\Client('hexammon', $loop);
+$loop = Factory::create();
+$client = new Client('hexammon', $loop);
 $client->setAuthId($workerAuthId);
 $client->setAuthMethods(['jwt']);
-$jwt = (new \FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter(JWT_SECRET_KEY))->encode([
+$jwt = (new FirebaseEncoderAdapter(JWT_SECRET_KEY))->encode([
     'authid' => $workerAuthId,
     'authroles' => ['game-worker']
 ], 'HS256');
 
-$client->addClientAuthenticator(new \Hexammon\Wamp\ClientJwtAuthenticator($jwt, 'game-watcher'));
+$client->addClientAuthenticator(new ClientJwtAuthenticator($jwt, 'game-watcher'));
 
-$router = new \Hexammon\GameWorker\Router($application, $gameUUID);
+$router = new Router($application, $gameUUID);
 
-$client->on('open', function (\Thruway\ClientSession $session) use ($router) {
+$client->on('open', function (ClientSession $session) use ($router) {
     $router->bindActions($session);
 
 });
@@ -47,7 +57,7 @@ $client->on('open', function (\Thruway\ClientSession $session) use ($router) {
 // Transport layer
 try {
     $url = sprintf('ws://%s:9000/', gethostbyname('wamp-router'));
-    $client->addTransportProvider(new \Thruway\Transport\PawlTransportProvider($url));
+    $client->addTransportProvider(new PawlTransportProvider($url));
     $client->start();
 } catch (Exception $e) {
     echo 'Cannot start thruway client. ' . PHP_EOL;

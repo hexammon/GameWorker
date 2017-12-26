@@ -1,5 +1,7 @@
 <?php
 
+use Thruway\Transport\PawlTransportProvider;
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $client = new Thruway\Peer\Client('hexammon');
@@ -40,7 +42,7 @@ $client->on('open', function (\Thruway\ClientSession $session) {
 try {
 //    $url = sprintf('ws://%s:9000/', gethostbyname('wamp-router'));
     $url = sprintf('ws://%s:9000/', '127.0.0.1');
-    $client->addTransportProvider(new \Thruway\Transport\PawlTransportProvider($url));
+    $client->addTransportProvider(new PawlTransportProvider($url));
     $client->start();
 } catch (Exception $e) {
     echo 'Cannot start thruway client. ' . PHP_EOL;

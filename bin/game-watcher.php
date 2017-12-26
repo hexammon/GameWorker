@@ -1,20 +1,28 @@
 <?php
 
+use FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter;
+use Hexammon\Wamp\ClientJwtAuthenticator;
+use React\ChildProcess\Process;
+use React\EventLoop\Factory;
+use Thruway\ClientSession;
+use Thruway\Peer\Client;
+use Thruway\Transport\PawlTransportProvider;
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 define('JWT_SECRET_KEY', getenv('JWT_SECRET_KEY'));
-$loop = \React\EventLoop\Factory::create();
-$client = new Thruway\Peer\Client('hexammon', $loop);
+$loop = Factory::create();
+$client = new Client('hexammon', $loop);
 $client->setAuthId('game-watcher');
 $client->setAuthMethods(['jwt']);
-$jwt = (new \FreeElephants\Jwt\Firebase\FirebaseEncoderAdapter(JWT_SECRET_KEY))->encode([
+$jwt = (new FirebaseEncoderAdapter(JWT_SECRET_KEY))->encode([
     'authid' => 'game-watcher',
     'authroles' => ['game_watcher']
 ], 'HS256');
 
-$client->addClientAuthenticator(new \Hexammon\Wamp\ClientJwtAuthenticator($jwt, 'game-watcher'));
+$client->addClientAuthenticator(new ClientJwtAuthenticator($jwt, 'game-watcher'));
 
-$client->on('open', function (\Thruway\ClientSession $session) use ($loop) {
+$client->on('open', function (ClientSession $session) use ($loop) {
 
     $session->register('net.hexammon.game.create', function ($args) use ($loop) {
 
@@ -22,7 +30,7 @@ $client->on('open', function (\Thruway\ClientSession $session) use ($loop) {
         $playersCmdArg = json_encode($playesIds);
         $boardCmdArg = json_encode([$boardType, $numberOfRows, $numberOfCols]);
         $newGameWorkerCmd = sprintf('php /srv/game-worker/bin/game-worker.php \'%s\' \'%s\'', $playersCmdArg, $boardCmdArg);
-        $process = new React\ChildProcess\Process($newGameWorkerCmd);
+        $process = new Process($newGameWorkerCmd);
         try {
             $process->start($loop);
         } catch (Throwable $e) {
@@ -45,7 +53,7 @@ $client->on('open', function (\Thruway\ClientSession $session) use ($loop) {
 // Transport layer
 try {
     $url = sprintf('ws://%s:9000/', gethostbyname('wamp-router'));
-    $client->addTransportProvider(new \Thruway\Transport\PawlTransportProvider($url));
+    $client->addTransportProvider(new PawlTransportProvider($url));
     $client->start();
 } catch (Exception $e) {
     echo 'Cannot start thruway client. ' . PHP_EOL;
