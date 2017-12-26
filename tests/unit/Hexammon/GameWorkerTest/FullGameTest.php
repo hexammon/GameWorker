@@ -26,8 +26,8 @@ class FullGameTest extends TestCase
      */
     public function testGame()
     {
-        $playerA = new Player();
-        $playerB = new Player();
+        $playerA = new Player('A');
+        $playerB = new Player('B');
         $ruleSet = new class extends ClassicRuleSet
         {
 

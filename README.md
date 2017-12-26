@@ -73,7 +73,7 @@ Where `BoardDiff` -- aggregation of affected in last move tiles -- object with n
 
 Called by Game Dispatcher. 
 
-`net.hexammon.games.create, [players: <Player>[], boardType: (hex|square), numberOfRows: <int>, numberOfColumns: <int>]`
+`net.hexammon.game.create, [players: <Player>[], boardType: (hex|square), numberOfRows: <int>, numberOfColumns: <int>]`
 
 Initialize game with players and board. Return structure with game info:
 

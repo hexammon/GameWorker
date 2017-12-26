@@ -14,6 +14,7 @@ $boardParams = json_decode($argv[2]);
 //var_dump($argv[2]);
 //var_dump($boardParams);
 $boardConfig = new \Hexammon\GameWorker\BoardConfig(...$boardParams);
+//var_dump($boardConfig);
 $ruleSet = new \Hexammon\HexoNards\Game\Rules\ClassicRuleSet();
 
 // Application logic

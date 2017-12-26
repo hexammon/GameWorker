@@ -12,11 +12,13 @@ $I->fillField('wamp-address', 'wamp-router:9000');
 
 $I->click('Connect');
 
-$I->see("Hello player");
+$I->waitForText("Hello game-dispatcher");
 
 $I->fillField('number-of-rows', 8);
 $I->fillField('number-of-cols', 8);
-$I->selectOption('cell-type', ['value' => 'hex']);
+$I->selectOption('[name=cell-type]', 'hex');
 $I->click('Create game');
 
-$I->seeNumberOfElements('#my-games li', 1);
+$I->click('Show games');
+
+$I->seeNumberOfElements('#games li', 1);

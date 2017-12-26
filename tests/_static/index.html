@@ -8,7 +8,7 @@
 <body>
 
 <header>
-    <h1>Hello <span id="login">anonymus</span></h1>
+    <h1>Hello <span id="login">Wamp Dispatcher</span></h1>
 </header>
 
 <fieldset>
@@ -19,16 +19,38 @@
 
 <fieldset>
     <legend>Game creation</legend>
-    <input type="number" id="number-of-rows" name="number-of-rows"/>
-    <input type="number" id="number-of-cols" name="number-of-cols"/>
-    <label for="cell-type-hex">hex</label><input type="radio" id="cell-type-hex" name="cell-type" value="hex"/>
-    <label for="cell-type-square">square</label><input type="radio" id="cell-type-square" name="cell-type"
-                                                       value="square"/>
-    <button id="create-game">Create game</button>
+    <label for="players">Players</label><select multiple id="players" name="players">
+    <option value="A">A</option>
+    <option value="B">B</option>
+    <option value="C">C</option>
+    <option value="D">D</option>
+</select>
+    <div>
+        <label for="number-of-rows">Number of rows</label> <input type="number" id="number-of-rows"
+                                                                  name="number-of-rows"/>
+    </div>
+    <div>
+        <label for="number-of-cols">Number of cols</label> <input type="number" id="number-of-cols"
+                                                                  name="number-of-cols"/>
+    </div>
+    <div>
+        <label for="cell-type-hex">hex</label><input type="radio" id="cell-type-hex" name="cell-type" value="hex"/>
+    </div>
+    <div>
+        <label for="cell-type-square">square</label><input type="radio" id="cell-type-square" name="cell-type"
+                                                           value="square"/>
+    </div>
+    <div>
+        <button id="create-game">Create game</button>
+    </div>
 </fieldset>
 
-<section id="games">
 
+<section>
+    <button id="show-games">Show games</button>
+    <ul id="games">
+
+    </ul>
 </section>
 </body>
 <script>
@@ -42,7 +64,7 @@
             onchallenge: function (session, method, extra) {
                 if (method === 'jwt') {
                     // you could also return a promise here
-                    return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoaWQiOiJwbGF5ZXIiLCJhdXRocm9sZXMiOlsicGxheWVyIl19.wCvVkIg648cjX7sxrqHv2VL2fjeSRWEMsYegUI6SI10';
+                    return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdXRoaWQiOiJnYW1lLWRpc3BhdGNoZXIiLCJhdXRocm9sZXMiOlsiZ2FtZV9kaXNwYXRjaGVyIl19.Jq9pvhwK29OL5iNiYdxjV8CH2SaN41VFdWECLRwOac0';
                 }
             }
         });
@@ -51,7 +73,10 @@
             document.getElementById("login").innerText = details.authid;
 
             document.getElementById("create-game").onclick = () => {
-                let playersIds = [1, 2];
+                let players = document.getElementById("players");
+                let playersIds = [...players.querySelectorAll(":checked")].map((value) => {
+                    return value.value;
+                });
                 let gameParams = [
                     playersIds,
                     document.querySelector('input[name="cell-type"]:checked').value,
@@ -69,6 +94,13 @@
                         console.debug(progress);
                     },
                 )
+            }
+
+            document.getElementById("show-games").onclick = () => {
+
+                let gamesList = document.getElementById("games");
+                let newGameItem = gamesList.createElement("li");
+                gamesList.appendChild(newGameItem);
             }
         };
 
